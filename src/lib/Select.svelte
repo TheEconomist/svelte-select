@@ -1,4 +1,9 @@
 <script>
+    import '@economist/design-system/dist/css/common/components/color/color.css';
+    import '@economist/design-system/dist/css/common/components/typography/font-face.css';
+    import '@economist/design-system/dist/css/common/components/typography/typography.css';
+    import '../css/select.css';
+
     import { beforeUpdate, createEventDispatcher, onDestroy, onMount } from 'svelte';
     import { offset, flip, shift } from 'svelte-floating-ui/dom';
     import { createFloatingActions } from 'svelte-floating-ui';
@@ -670,172 +675,189 @@
 
 <svelte:window on:click={handleClickOutside} on:keydown={handleKeyDown} />
 
-<div
-    class="svelte-select {containerClasses}"
-    class:multi={multiple}
-    class:disabled
-    class:focused
-    class:list-open={listOpen}
-    class:show-chevron={showChevron}
-    class:error={hasError}
-    style={containerStyles}
-    on:pointerup|preventDefault={handleClick}
-    bind:this={container}
-    use:floatingRef
-    role="none">
-    {#if listOpen}
-        <div
-            use:floatingContent
-            bind:this={list}
-            class="svelte-select-list"
-            class:prefloat
-            on:scroll={handleListScroll}
-            on:pointerup|preventDefault|stopPropagation
-            on:mousedown|preventDefault|stopPropagation
-			role="none">
-            {#if $$slots['list-prepend']}<slot name="list-prepend" />{/if}
-            {#if $$slots.list}<slot name="list" {filteredItems} />
-            {:else if filteredItems.length > 0}
-                {#each filteredItems as item, i}
-                    <div
-                        on:mouseover={() => handleHover(i)}
-                        on:focus={() => handleHover(i)}
-                        on:click|stopPropagation={() => handleItemClick({ item, i })}
-                        on:keydown|preventDefault|stopPropagation
-                        class="list-item"
-                        tabindex="-1"
-                        role="none">
+<div class="select-theme-economist">
+    <div
+        class="svelte-select {containerClasses}"
+        class:multi={multiple}
+        class:disabled
+        class:focused
+        class:list-open={listOpen}
+        class:show-chevron={showChevron}
+        class:error={hasError}
+        style={containerStyles}
+        on:pointerup|preventDefault={handleClick}
+        bind:this={container}
+        use:floatingRef
+        role="none">
+        {#if listOpen}
+            <div
+                use:floatingContent
+                bind:this={list}
+                class="svelte-select-list"
+                class:prefloat
+                on:scroll={handleListScroll}
+                on:pointerup|preventDefault|stopPropagation
+                on:mousedown|preventDefault|stopPropagation
+                role="none">
+                {#if $$slots['list-prepend']}<slot name="list-prepend" />{/if}
+                {#if $$slots.list}<slot name="list" {filteredItems} />
+                {:else if filteredItems.length > 0}
+                    {#each filteredItems as item, i}
                         <div
-                            use:activeScroll={{ scroll: isItemActive(item, value, itemId), listDom }}
-                            use:hoverScroll={{ scroll: scrollToHoverItem === i, listDom }}
-                            class="item"
-                            class:list-group-title={item.groupHeader}
-                            class:active={isItemActive(item, value, itemId)}
-                            class:first={isItemFirst(i)}
-                            class:hover={hoverItemIndex === i}
-                            class:group-item={item.groupItem}
-                            class:not-selectable={item?.selectable === false}>
-                            <slot name="item" {item} index={i}>
-                                {item?.[label]}
-                            </slot>
-                        </div>
-                    </div>
-                {/each}
-            {:else if !hideEmptyState}
-                <slot name="empty">
-                    <div class="empty">No options</div>
-                </slot>
-            {/if}
-            {#if $$slots['list-append']}<slot name="list-append" />{/if}
-        </div>
-    {/if}
-
-    <span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text">
-        {#if focused}
-            <span id="aria-selection">{ariaSelection}</span>
-            <span id="aria-context">
-                {ariaContext}
-            </span>
-        {/if}
-    </span>
-
-    <div class="prepend">
-        <slot name="prepend" />
-    </div>
-
-    <div class="value-container">
-        {#if hasValue}
-            {#if multiple}
-                {#each value as item, i}
-                    <div
-                        class="multi-item"
-                        class:active={activeValue === i}
-                        class:disabled
-                        on:click|preventDefault={() => (multiFullItemClearable ? handleMultiItemClear(i) : {})}
-                        on:keydown|preventDefault|stopPropagation
-                        role="none">
-                        <span class="multi-item-text">
-                            <slot name="selection" selection={item} index={i}>
-                                {item[label]}
-                            </slot>
-                        </span>
-
-                        {#if !disabled && !multiFullItemClearable && ClearIcon}
+                            on:mouseover={() => handleHover(i)}
+                            on:focus={() => handleHover(i)}
+                            on:click|stopPropagation={() => handleItemClick({ item, i })}
+                            on:keydown|preventDefault|stopPropagation
+                            class="list-item"
+                            tabindex="-1"
+                            role="none">
                             <div
-                                class="multi-item-clear"
-                                on:pointerup|preventDefault|stopPropagation={() => handleMultiItemClear(i)}>
-                                <slot name="multi-clear-icon">
-                                    <ClearIcon />
+                                use:activeScroll={{ scroll: isItemActive(item, value, itemId), listDom }}
+                                use:hoverScroll={{ scroll: scrollToHoverItem === i, listDom }}
+                                class="item"
+                                class:list-group-title={item.groupHeader}
+                                class:active={isItemActive(item, value, itemId)}
+                                class:first={isItemFirst(i)}
+                                class:hover={hoverItemIndex === i}
+                                class:group-item={item.groupItem}
+                                class:not-selectable={item?.selectable === false}>
+                                <slot name="item" {item} index={i}>
+                                    {item?.[label]}
                                 </slot>
                             </div>
-                        {/if}
+                        </div>
+                    {/each}
+                {:else if !hideEmptyState}
+                    <slot name="empty">
+                        <div class="empty">No options</div>
+                    </slot>
+                {/if}
+                {#if $$slots['list-append']}<slot name="list-append" />{/if}
+            </div>
+        {/if}
+
+        <span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text">
+            {#if focused}
+                <span id="aria-selection">{ariaSelection}</span>
+                <span id="aria-context">
+                    {ariaContext}
+                </span>
+            {/if}
+        </span>
+
+        <div class="prepend">
+            <slot name="prepend" />
+        </div>
+
+        <div class="value-container">
+            {#if hasValue}
+                {#if multiple}
+                    {#each value as item, i}
+                        <div
+                            class="multi-item"
+                            class:active={activeValue === i}
+                            class:disabled
+                            on:click|preventDefault={() => (multiFullItemClearable ? handleMultiItemClear(i) : {})}
+                            on:keydown|preventDefault|stopPropagation
+                            role="none">
+                            <span class="multi-item-text">
+                                <slot name="selection" selection={item} index={i}>
+                                    {item[label]}
+                                </slot>
+                            </span>
+
+                            {#if !disabled && !multiFullItemClearable && ClearIcon}
+                                <div
+                                    class="multi-item-clear"
+                                    on:pointerup|preventDefault|stopPropagation={() => handleMultiItemClear(i)}>
+                                    <slot name="multi-clear-icon">
+                                        <ClearIcon />
+                                    </slot>
+                                </div>
+                            {/if}
+                        </div>
+                    {/each}
+                {:else}
+                    <div class="selected-item" class:hide-selected-item={hideSelectedItem}>
+                        <slot name="selection" selection={value}>
+                            {value[label]}
+                        </slot>
                     </div>
-                {/each}
-            {:else}
-                <div class="selected-item" class:hide-selected-item={hideSelectedItem}>
-                    <slot name="selection" selection={value}>
-                        {value[label]}
+                {/if}
+            {/if}
+
+            <input
+                on:keydown={handleKeyDown}
+                on:blur={handleBlur}
+                on:focus={handleFocus}
+                readOnly={!searchable}
+                {..._inputAttributes}
+                bind:this={input}
+                bind:value={filterText}
+                placeholder={placeholderText}
+                style={inputStyles}
+                {disabled} />
+        </div>
+
+        <div class="indicators">
+            {#if loading}
+                <div class="icon loading" aria-hidden="true">
+                    <slot name="loading-icon">
+                        <LoadingIcon />
                     </slot>
                 </div>
             {/if}
-        {/if}
 
-        <input
-            on:keydown={handleKeyDown}
-            on:blur={handleBlur}
-            on:focus={handleFocus}
-            readOnly={!searchable}
-            {..._inputAttributes}
-            bind:this={input}
-            bind:value={filterText}
-            placeholder={placeholderText}
-            style={inputStyles}
-            {disabled} />
-    </div>
+            {#if showClear}
+                <button type="button" class="icon clear-select" on:click={handleClear}>
+                    <slot name="clear-icon">
+                        <ClearIcon />
+                    </slot>
+                </button>
+            {/if}
 
-    <div class="indicators">
-        {#if loading}
-            <div class="icon loading" aria-hidden="true">
-                <slot name="loading-icon">
-                    <LoadingIcon />
-                </slot>
-            </div>
-        {/if}
+            {#if showChevron}
+                <div class="icon chevron" aria-hidden="true">
+                    <slot name="chevron-icon" {listOpen}>
+                        <ChevronIcon />
+                    </slot>
+                </div>
+            {/if}
+        </div>
 
-        {#if showClear}
-            <button type="button" class="icon clear-select" on:click={handleClear}>
-                <slot name="clear-icon">
-                    <ClearIcon />
-                </slot>
-            </button>
-        {/if}
-
-        {#if showChevron}
-            <div class="icon chevron" aria-hidden="true">
-                <slot name="chevron-icon" {listOpen}>
-                    <ChevronIcon />
-                </slot>
-            </div>
-        {/if}
-    </div>
-
-    <slot name="input-hidden" {value}>
-        <input {name} type="hidden" value={value ? JSON.stringify(value) : null} />
-    </slot>
-
-    {#if required && (!value || value.length === 0)}
-        <slot name="required" {value}>
-            <select class="required" required tabindex="-1" aria-hidden="true" />
+        <slot name="input-hidden" {value}>
+            <input {name} type="hidden" value={value ? JSON.stringify(value) : null} />
         </slot>
-    {/if}
-</div>
 
+        {#if required && (!value || value.length === 0)}
+            <slot name="required" {value}>
+                <select class="required" required tabindex="-1" aria-hidden="true" />
+            </slot>
+        {/if}
+    </div>
+</div>
 <style>
-    .svelte-select {
+    
+    .svelte-select {    
+        font-family: var(--ds-type-system-sans);
+        /* theming variables */
+
+        /* This first block are addded to the defaults, 2nd block are default with some overrides */
+        --height: 2.25rem;
+        --padding: 0 12px;
+        --indicatorTop: 4px;
+        --inputFontSize: 16px;    
+        --borderFocusColor: var(--ds-color-london-35);
+        --borderHoverColor: var(--ds-color-london-35);
+        --clearSelectTop: -2px;
+        --clearSelectBottom: 0;    
+        --clearSelectFocusColor: var(--ds-color-london-35);
+        --border: 1px solid var(--ds-color-london-35);
+    
         /* deprecating camelCase custom props in favour of kebab-case for v5 */
-        --borderRadius: var(--border-radius);
-        --clearSelectColor: var(--clear-select-color);
-        --clearSelectWidth: var(--clear-select-width);
+        --borderRadius: 0.25rem; /*--borderRadius: var(--border-radius);*/
+        --clearSelectColor: var(--ds-color-london-35); /*--clearSelectColor: var(--clear-select-color); */
+        --clearSelectWidth: 18px; /*--clearSelectWidth: var(--clear-select-width);*/
         --disabledBackground: var(--disabled-background);
         --disabledBorderColor: var(--disabled-border-color);
         --disabledColor: var(--disabled-color);
@@ -852,7 +874,7 @@
         --groupTitleBorderColor: var(--group-title-border-color);
         --groupTitleBorderWidth: var(--group-title-border-width);
         --groupTitleBorderStyle: var(--group-title-border-style);
-        --indicatorColor: var(--chevron-color);
+        --indicatorColor: var(--ds-color-london-35); /*--indicatorColor: var(--chevron-color);*/
         --indicatorHeight: var(--chevron-height);
         --indicatorWidth: var(--chevron-width);
         --inputColor: var(--input-color);
@@ -889,8 +911,8 @@
         --multiSelectInputMargin: var(--multi-select-input-margin);
         --multiSelectInputPadding: var(--multi-select-input-padding);
         --multiSelectPadding: var(--multi-select-padding);
-        --placeholderColor: var(--placeholder-color);
-        --placeholderOpacity: var(--placeholder-opacity);
+        --placeholderColor: var(--ds-color-london-35); /*--placeholderColor: var(--placeholder-color);*/
+        --placeholderOpacity: 0.5; /*--placeholderOpacity: var(--placeholder-opacity);*/
         --selectedItemPadding: var(--selected-item-padding);
         --spinnerColor: var(--spinner-color);
         --spinnerHeight: var(--spinner-height);
@@ -947,6 +969,7 @@
     }
 
     input {
+        font-family: var(--ds-type-system-sans);
         position: absolute;
         cursor: default;
         border: none;
@@ -1217,4 +1240,37 @@
         bottom: 0;
         right: 0;
     }
+
+
+    @media (min-width: 600px) {
+    .svelte-select {
+      --inputFontSize: 14px;
+    }
+
+    .selectContainer {
+    box-sizing: border-box;
+    font-family: var(--ds-type-system-sans);
+    font-size: 16px;
+    width: 200px;
+  }
+  @media (min-width: 450px) {
+    .selectContainer {
+      width: 200px;
+    }
+  }
+  @media (min-width: 960px) {
+    .selectContainer {
+      width: 200px;
+    }
+  }
+  .selectContainer .item {
+    font-size: 16px;
+  }
+  @media (min-width: 600px) {
+    .selectContainer,
+    .selectContainer .item {
+      font-size: 14px;
+    }
+  }
+  }
 </style>

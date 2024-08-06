@@ -6,6 +6,9 @@ const config = {
     optimizeDeps: {
         include: ['highlight.js', 'highlight.js/lib/core'],
     },
+    server: {
+        port: 5174
+    }
 };
 
 export default config;

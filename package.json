@@ -1,5 +1,5 @@
 {
-  "name": "svelte-select",
+  "name": "@economist/svelte-select",
   "version": "5.8.3",
   "repository": "https://rob-balfre@github.com/rob-balfre/svelte-select.git",
   "description": "A <Select> component for Svelte apps",
@@ -70,6 +70,7 @@
     }
   },
   "dependencies": {
+    "@economist/design-system": "^7.17.0",
     "svelte-floating-ui": "1.5.8"
   }
 }
